@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+           id="com.qt.app.common.BGPlugin"
+      version="0.1.0">
+    <name>BackgroundPlugin</name>
+    <description>Background Service Plugin for syncing phone user account with php server</description>
+    <license>MIT</license>
+    <keywords>phonegap, background, account management</keywords>
+ 
+ 
+    <js-module src="www/bgplugin.js" name="BGPlugin">
+        <clobbers target="window.bgplugin" />
+    </js-module>
+ 
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="BGPlugin">
+                <param name="android-package" value="com.qt.app.common.BGPlugin"/>
+            </feature>
+        </config-file>	
+ 
+        <source-file src="src/android/BGPlugin.java" target-dir="src/com/qt/app/common" />      
+		<source-file src="src/android/BGService.java" target-dir="src/com/qt/app/common" />    
+     </platform>          
+</plugin>

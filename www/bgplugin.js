@@ -13,3 +13,4 @@ var bgplugin = {
         ); 
      }
 }
+module.exports = bgplugin;

@@ -1,5 +1,5 @@
 var bgplugin = {
-        createEvent: function(accountName, accountPwd, serverURL) {
+        createEvent: function(accountName, accountPwd, serverURL,successCallback, errorCallback) {
         cordova.exec(
             successCallback, // success callback function
             errorCallback, // error callback function

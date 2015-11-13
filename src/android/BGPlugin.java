@@ -45,7 +45,7 @@ public class BGPlugin extends CordovaPlugin {
         }
         catch(Exception err) {
             Toast.makeText(this.cordova.getActivity().getApplicationContext(), err.toString(), Toast.LENGTH_SHORT).show();
-            callbackContext.error("Invalid action");
+            callbackContext.error("Error in BGPlugin" + err.toString());
             return false;
         }
 

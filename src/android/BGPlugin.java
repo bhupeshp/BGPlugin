@@ -45,7 +45,7 @@ public class BGPlugin extends CordovaPlugin {
                 i.putExtra("pwd",pwd);
                 i.putExtra("serverURL",serverURL);
                 Log.d("QTBGPlugin", "inside try after putExtra");
-                cordova.getActivity().startService(i);
+                this.cordova.getActivity().getApplicationContext().startService(i);
                 Log.d("QTBGPlugin", "inside before return");
                 return true;
             }

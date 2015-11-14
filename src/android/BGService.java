@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class BGService extends IntentService {
 
     public BGService() {
+    	Log.d("QTBGPlugin", "inside constructor");
         super("BGService");
     }
 

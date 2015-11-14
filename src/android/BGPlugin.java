@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.cordova.CallbackContext;
@@ -22,9 +23,12 @@ public class BGPlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+        
+        Log.d("QTBGPlugin", "inside execute");
 
         try {
             if (ACTION_ADD_BGSERVICE.equals(action)) {
+                Log.d("QTBGPlugin", "inside try");
                 JSONObject arg_object = args.getJSONObject(0);
                 String accountName = arg_object.getString("accountName");
                 String pwd = arg_object.getString("accountPwd");
@@ -44,6 +48,7 @@ public class BGPlugin extends CordovaPlugin {
             return false;
         }
         catch(Exception err) {
+            Log.d("QTBGPlugin", "inside catch");
             Toast.makeText(this.cordova.getActivity().getApplicationContext(), err.toString(), Toast.LENGTH_SHORT).show();
             callbackContext.error("Error in BGPlugin" + err.toString());
             return false;

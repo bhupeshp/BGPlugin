@@ -24,7 +24,7 @@ public class BGPlugin extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         
-        Log.d("QTBGPlugin", "inside execute");
+        Log.d("QTBGPlugin", "inside execute of plugin");
 
         try {
             if (ACTION_ADD_BGSERVICE.equals(action)) {

@@ -38,14 +38,14 @@ public class BGPlugin extends CordovaPlugin {
 
                 Context context=this.cordova.getActivity().getApplicationContext();
                 // use this to start and trigger a service
-                Intent i= new Intent(context, BGService.class);
+                Intent i= new Intent(this.cordova.getActivity(), BGService.class);
                 Log.d("QTBGPlugin", "inside try created intent");
                 // potentially add data to the intent
                 i.putExtra("accountName", accountName);
                 i.putExtra("pwd",pwd);
                 i.putExtra("serverURL",serverURL);
                 Log.d("QTBGPlugin", "inside try after putExtra");
-                this.cordova.getActivity().getApplicationContext().startService(i);
+                this.cordova.getActivity().startService(i);
                 Log.d("QTBGPlugin", "inside before return");
                 return true;
             }

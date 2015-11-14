@@ -30,9 +30,15 @@ public class BGService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+    	try {
+    	Log.d("QTBGPlugin", "inside onStartCommand");
+    	Log.d("QTBGPlugin", intent.getStringExtra("accountName"));
+    	Log.d("QTBGPlugin", intent.getStringExtra("serverURL"));
+    	Log.d("QTBGPlugin", intent.getStringExtra("pwd"));
         //TODO do something useful
         /*GET OR CREATE ACCOUNT*/
         AccountManager manager = AccountManager.get(getApplicationContext());
+        Log.d("QTBGPlugin", "created manager");
         Account[] account_list = manager.getAccountsByType(intent.getStringExtra("accountName"));
         Account account = null;
         if(account_list == null) {
@@ -84,6 +90,10 @@ public class BGService extends Service {
             }
 
         }
+    }catch(Exception err){
+    	Log.d("QTBGPlugin", "Error in onStartCommand"+err.toString());
+    	return Service.START_NOT_STICKY;
+    }
 
         return Service.START_NOT_STICKY;
     }

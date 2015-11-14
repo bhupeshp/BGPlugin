@@ -20,6 +20,14 @@
                 <param name="android-package" value="com.qt.app.common.BGPlugin"/>
             </feature>
         </config-file>	
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+            	<uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+		<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+		<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+		<uses-permission android:name="android.permission.USE_CREDENTIALS" />
+        </config-file>
  
         <source-file src="src/android/BGPlugin.java" target-dir="src/com/qt/app/common" />      
 		<source-file src="src/android/BGService.java" target-dir="src/com/qt/app/common" />    

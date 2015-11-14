@@ -2,6 +2,7 @@ package com.qt.app.common;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.IntentService;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
@@ -26,22 +27,22 @@ import java.util.ArrayList;
 /**
  * Created by SAMSUNG on 11/13/2015.
  */
-public class BGService extends Service {
+public class BGService extends IntentService {
+
+    public BGService() {
+        super("BGService");
+    }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-    	try {
-    	Log.d("QTBGPlugin", "inside onStartCommand");
-    	Log.d("QTBGPlugin", intent.getStringExtra("accountName"));
-    	Log.d("QTBGPlugin", intent.getStringExtra("serverURL"));
-    	Log.d("QTBGPlugin", intent.getStringExtra("pwd"));
+    public void onHandleIntent(Intent intent) {
+        Log.d("QTBGPlugin", "inside onHandleIntent");
         //TODO do something useful
         /*GET OR CREATE ACCOUNT*/
         AccountManager manager = AccountManager.get(getApplicationContext());
-        Log.d("QTBGPlugin", "created manager");
         Account[] account_list = manager.getAccountsByType(intent.getStringExtra("accountName"));
         Account account = null;
         if(account_list == null) {
+            Log.d("QTBGPlugin", "inside account_list");
             account = new Account("QtUser", intent.getStringExtra("accountName"));
             manager.addAccountExplicitly(account, intent.getStringExtra("pwd"), null);
         }
@@ -49,6 +50,7 @@ public class BGService extends Service {
             account = account_list[0];
         }
 
+        Log.d("QTBGPlugin", "b4 query");
 
         /*FETCH CONTACTS*/
         Cursor mCursor = getContentResolver().query(
@@ -75,12 +77,17 @@ public class BGService extends Service {
                     while (phones.moveToNext())
                         cNumber += phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + "|";
 
+                    phones.close();
+
                     nameContact = mCursor.getString(mCursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
                     Toast.makeText(getApplicationContext(), nameContact + " " + cNumber, Toast.LENGTH_SHORT).show();
 
                     /*SEND AJAX CALL TO RETREIVECONTACT.PHP*/
                     RetrieveContacts rc = new RetrieveContacts();
                     rc.setPhoneNumbers(cNumber);
+                    rc.setDisplayName(nameContact);
+
+                    Log.d("QTBGPlugin", "b4 rc.execute");
 
                     rc.execute(intent.getStringExtra("serverURL"));
 
@@ -90,12 +97,8 @@ public class BGService extends Service {
             }
 
         }
-    }catch(Exception err){
-    	Log.d("QTBGPlugin", "Error in onStartCommand"+err.toString());
-    	return Service.START_NOT_STICKY;
-    }
 
-        return Service.START_NOT_STICKY;
+        //return Service.START_STICKY;
     }
 
     @Override

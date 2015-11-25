@@ -1,14 +1,12 @@
 var bgplugin = {
-        createEvent: function(accountName, accountPwd, serverURL,successCallback, errorCallback) {
+        createEvent: function(contactid,successCallback, errorCallback) {
         cordova.exec(
             successCallback, // success callback function
             errorCallback, // error callback function
             'BGPlugin', // mapped to our native Java class called "Calendar"
             'addBGService', // with this action name
             [{                  // and this array of custom arguments to create our entry
-                "accountName": accountName,
-                "accountPwd": accountPwd,
-                "serverURL": serverURL
+                "contactid": contactid
             }]
         ); 
      }

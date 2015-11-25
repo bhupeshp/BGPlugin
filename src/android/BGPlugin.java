@@ -11,6 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Created by SAMSUNG on 11/13/2015.
+ */
 public class BGPlugin extends CordovaPlugin {
 
     public static final String ACTION_ADD_BGSERVICE = "addBGService";
@@ -25,7 +28,7 @@ public class BGPlugin extends CordovaPlugin {
             if (ACTION_ADD_BGSERVICE.equals(action)) {
                 Log.d("QTBGPlugin", "inside execute");
                 JSONObject arg_object = args.getJSONObject(0);
-                String contactId = arg_object.getString("contactid");
+                String contactId = arg_object.getString("contactId");
 
                 Context context=this.cordova.getActivity().getApplicationContext();
                 Cursor qCursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, null,
@@ -37,10 +40,10 @@ public class BGPlugin extends CordovaPlugin {
                     return true;
                 }
                 qCursor.close();
-                callbackContext.success();
+                callbackContext.error("not_found");
                 return false;
             }
-            callbackContext.error("Invalid action");
+            callbackContext.error("Invalid_action");
             return false;
         }
         catch(Exception err) {

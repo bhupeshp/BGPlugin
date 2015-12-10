@@ -51,7 +51,9 @@ public class BGPlugin extends CordovaPlugin {
                         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC");
 
                 while (cursor.moveToNext()) {
-                    contactList.put(getContact(cursor));
+                    int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
+                    if(hasPhoneNumber>0)
+                        contactList.put(getContact(cursor));
                 }
                 callbackContext.success(contactList);
                 cursor.close();

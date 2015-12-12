@@ -34,29 +34,35 @@ public class BGPlugin extends CordovaPlugin {
 
 
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
         Log.d("QTBGPlugin", "inside execute");
 
         try {
             if (ACTION_ADD_BGSERVICE.equals(action)) {
+                cordova.getThreadPool().execute(new Runnable() {
+                    public void run() {
+                        contentResolver = cordova.getActivity().getApplicationContext().getContentResolver();
+                        Log.d("QTBGPlugin", "inside execute");
 
-                contentResolver = this.cordova.getActivity().getApplicationContext().getContentResolver();
-                Log.d("QTBGPlugin", "inside execute");
+
+                        JSONArray contactList = new JSONArray();
+                        String[] projection = new String[]{CONTACT_ID, DISPLAY_NAME, HAS_PHONE_NUMBER};
+                        Cursor cursor = contentResolver.query(QUERY_URI, projection, null, null,
+                                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+
+                        while (cursor.moveToNext()) {
+                            int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
+                            if (hasPhoneNumber > 0)
+                                contactList.put(getContact(cursor));
+                        }
+                        callbackContext.success(contactList);
+                        cursor.close();
+
+                    }
+                });
 
 
-                JSONArray contactList = new JSONArray();
-                String[] projection = new String[]{CONTACT_ID, DISPLAY_NAME, HAS_PHONE_NUMBER};
-                Cursor cursor = contentResolver.query(QUERY_URI, projection, null, null,
-                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC");
-
-                while (cursor.moveToNext()) {
-                    int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
-                    if(hasPhoneNumber>0)
-                        contactList.put(getContact(cursor));
-                }
-                callbackContext.success(contactList);
-                cursor.close();
                 return true;
             }
 

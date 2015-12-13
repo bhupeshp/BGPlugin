@@ -19,6 +19,7 @@ import org.json.JSONObject;
 public class BGPlugin extends CordovaPlugin {
 
     public static final String ACTION_ADD_BGSERVICE = "addBGService";
+    public static final String ACTION_GET_OWNERNAME = "getOwnerName";
     private Uri QUERY_URI = ContactsContract.Contacts.CONTENT_URI;
     private String CONTACT_ID = ContactsContract.Contacts._ID;
     private String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
@@ -65,6 +66,30 @@ public class BGPlugin extends CordovaPlugin {
 
                 return true;
             }
+
+            if (ACTION_GET_OWNERNAME.equals(action)) {
+                contentResolver = cordova.getActivity().getApplicationContext().getContentResolver();
+                Cursor c = contentResolver.query(ContactsContract.Profile.CONTENT_URI, null, null, null, null);
+                int count = c.getCount();
+                String[] columnNames = c.getColumnNames();
+                boolean b = c.moveToFirst();
+                int position = c.getPosition();
+                JSONArray ownerInfoList = new JSONArray();
+                if (count == 1 && position == 0) {
+                    for (int j = 0; j < columnNames.length; j++) {
+                        String columnName = columnNames[j];
+                        String columnValue = c.getString(c.getColumnIndex(columnName));
+                        JSONObject ownerInfo = new JSONObject();
+                        ownerInfo.put(columnName,columnValue);
+                        ownerInfoList.put(ownerInfo);
+                    }
+                }
+                c.close();
+                callbackContext.success(ownerInfoList);
+
+                return true;
+            }
+
 
             callbackContext.error("not_found");
             return false;

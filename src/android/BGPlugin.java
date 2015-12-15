@@ -1,11 +1,17 @@
 package com.qt.app.common;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -20,6 +26,7 @@ public class BGPlugin extends CordovaPlugin {
 
     public static final String ACTION_ADD_BGSERVICE = "addBGService";
     public static final String ACTION_GET_OWNERNAME = "getOwnerName";
+    public static final String ACTION_GET_NOTIFICATION = "getPersistentNotification";
     private Uri QUERY_URI = ContactsContract.Contacts.CONTENT_URI;
     private String CONTACT_ID = ContactsContract.Contacts._ID;
     private String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
@@ -90,6 +97,58 @@ public class BGPlugin extends CordovaPlugin {
                 return true;
             }
 
+            if(ACTION_GET_NOTIFICATION.equals(action)){
+                // Use NotificationCompat.Builder to set up our notification.
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext());
+
+                //icon appears in device notification bar and right hand corner of notification
+                builder.setSmallIcon(R.drawable.icon);
+
+                // This intent is fired when notification is clicked
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javatechig.com/"));
+                Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com/"));
+                Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("http://facebook.com/"));
+                Intent intentExit = new Intent(Intent.ACTION_VIEW, Uri.parse("http://youtube.com/"));
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                PendingIntent pendingIntentScan = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intentScan, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                PendingIntent pendingIntentVCard = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intentVCard, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                PendingIntent pendingIntentExit = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intentExit, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // Set the intent that will fire when the user taps the notification.
+                builder.setContentIntent(pendingIntent);
+
+                // Large icon appears on the left of the notification
+                builder.setLargeIcon(BitmapFactory.decodeResource(cordova.getActivity().getApplicationContext().getResources(), R.drawable.icon));
+
+                // Content title, which appears in large type at the top of the notification
+                builder.setContentTitle("Notifications Title");
+
+                // Content text, which appears in smaller text below the title
+                builder.setContentText("Your notification content here.");
+
+                builder.setAutoCancel(false);
+
+                // The subtext, which appears under the text on newer devices.
+                // This will show-up in the devices with Android 4.2 and above only
+                builder.setSubText("Tap to view documentation about notifications.");
+
+                builder.addAction(R.drawable.icon, "SCAN", pendingIntentScan);
+                builder.addAction(R.drawable.icon, "Qt Card", pendingIntentVCard);
+                builder.addAction(R.drawable.icon, "Exit", pendingIntentExit);
+
+                NotificationManager notificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+                // Will display the notification in the notification bar
+                notificationManager.notify(0, builder.build());
+
+                callbackContext.success();
+                return true;
+
+            }
 
             callbackContext.error("not_found");
             return false;

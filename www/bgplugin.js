@@ -18,6 +18,15 @@ var bgplugin = {
             'getOwnerName', // with this action name
             []
         );
+     },
+     getPersistentNotification: function(successCallback, errorCallback){
+        cordova.exec(
+            successCallback, // success callback function
+            errorCallback, // error callback function
+            'BGPlugin', // mapped to our native Java class called "Calendar"
+            'getPersistentNotification', // with this action name
+            []
+        );
      }
 };
 module.exports = bgplugin;

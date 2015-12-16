@@ -105,10 +105,30 @@ public class BGPlugin extends CordovaPlugin {
                 //icon appears in device notification bar and right hand corner of notification
                 builder.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon);
 
+                class CallbackAction {
+                    public CallbackAction() {
+                        callbackContext.success("app");
+                    }
+                }
+                class CallbackScan {
+                    public CallbackScan() {
+                        callbackContext.success("scan");
+                    }
+                }
+                class CallbackVCard {
+                    public CallbackVCard() {
+                        callbackContext.success("vcard");
+                    }
+                }
+
+
                 // This intent is fired when notification is clicked
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javatechig.com/"));
-                Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com/"));
-                Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("http://facebook.com/"));
+                //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javatechig.com/"));
+                Intent intent = new Intent(cordova.getActivity().getApplicationContext(), CallbackAction.class);
+                //Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com/"));
+                Intent intentScan = new Intent(cordova.getActivity().getApplicationContext(), CallbackScan.class);
+                //Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("http://facebook.com/"));
+                Intent intentVCard = new Intent(cordova.getActivity().getApplicationContext(), CallbackVCard.class);
                 Intent intentExit = new Intent(Intent.ACTION_VIEW, Uri.parse("http://youtube.com/"));
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

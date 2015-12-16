@@ -18,6 +18,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.R;
 
 /**
  * Created by QTTeam on 11/13/2015.
@@ -102,7 +103,7 @@ public class BGPlugin extends CordovaPlugin {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext());
 
                 //icon appears in device notification bar and right hand corner of notification
-                builder.setSmallIcon(R.drawable.icon);
+                builder.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon);
 
                 // This intent is fired when notification is clicked
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javatechig.com/"));
@@ -122,7 +123,7 @@ public class BGPlugin extends CordovaPlugin {
                 builder.setContentIntent(pendingIntent);
 
                 // Large icon appears on the left of the notification
-                builder.setLargeIcon(BitmapFactory.decodeResource(cordova.getActivity().getApplicationContext().getResources(), R.drawable.icon));
+                builder.setLargeIcon(BitmapFactory.decodeResource(cordova.getActivity().getApplicationContext().getResources(), cordova.getActivity().getApplicationContext().getApplicationInfo().icon));
 
                 // Content title, which appears in large type at the top of the notification
                 builder.setContentTitle("Notifications Title");
@@ -136,9 +137,9 @@ public class BGPlugin extends CordovaPlugin {
                 // This will show-up in the devices with Android 4.2 and above only
                 builder.setSubText("Tap to view documentation about notifications.");
 
-                builder.addAction(R.drawable.icon, "SCAN", pendingIntentScan);
-                builder.addAction(R.drawable.icon, "Qt Card", pendingIntentVCard);
-                builder.addAction(R.drawable.icon, "Exit", pendingIntentExit);
+                builder.addAction(R.drawable.ic_menu_camera, "SCAN", pendingIntentScan);
+                builder.addAction(R.drawable.ic_menu_share, "Qt Card", pendingIntentVCard);
+                builder.addAction(R.drawable.ic_menu_close_clear_cancel, "Exit", pendingIntentExit);
 
                 NotificationManager notificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 

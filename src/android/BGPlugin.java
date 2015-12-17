@@ -15,7 +15,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +40,6 @@ public class BGPlugin extends CordovaPlugin {
     private String PHONE_CONTACT_ID = ContactsContract.CommonDataKinds.Phone.CONTACT_ID;
     private Uri CONTENT_DATA_URI = ContactsContract.Data.CONTENT_URI;
     private ContentResolver contentResolver;
-    private CallbackContext callback;
 
 
     @Override
@@ -101,35 +99,15 @@ public class BGPlugin extends CordovaPlugin {
             }
 
             if(ACTION_GET_NOTIFICATION.equals(action)){
-
-                this.callback = callbackContext;
-
                 // Use NotificationCompat.Builder to set up our notification.
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext());
 
                 //icon appears in device notification bar and right hand corner of notification
                 builder.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon);
 
-                class CallbackAction {
-                    public CallbackAction() {
-                        Log.d("QTBGPlugin", "inside CallbackAction");
-                        PluginResult result = new PluginResult(PluginResult.Status.OK, "app");
-                        result.setKeepCallback(true);
-                        callback.sendPluginResult(result);
-                    }
-                }
-                class CallbackActionScan {
-                    public CallbackActionScan() {
-                        Log.d("QTBGPlugin", "inside CallbackActionScan");
-                        PluginResult result = new PluginResult(PluginResult.Status.OK, "scan");
-                        result.setKeepCallback(true);
-                        callback.sendPluginResult(result);
-                    }
-                }
-
                 // This intent is fired when notification is clicked
-                Intent intent = new Intent(cordova.getActivity().getApplicationContext(), CallbackAction.class);
-                Intent intentScan = new Intent(cordova.getActivity().getApplicationContext(), CallbackActionScan.class);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://"));
+                Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://"));
                 Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("http://facebook.com/"));
                 Intent intentExit = new Intent(Intent.ACTION_VIEW, Uri.parse("http://youtube.com/"));
 

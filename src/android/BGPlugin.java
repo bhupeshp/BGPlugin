@@ -107,8 +107,8 @@ public class BGPlugin extends CordovaPlugin {
 
                 // This intent is fired when notification is clicked
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("qt://"));
-                Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("qt://scan"));
-                Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("qt://vcard"));
+                Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("qt://?qtaction=scan"));
+                Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("qt://?qtaction=vcard"));
                 Intent intentExit = new Intent(cordova.getActivity().getApplicationContext(), ButtonReceiver.class);
                 intentExit.putExtra("notificationId","0");
 

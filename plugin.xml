@@ -2,7 +2,7 @@
  
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
            id="com.qt.app.common.BGPlugin"
-      version="0.1.20">
+      version="0.1.21">
     <name>BackgroundPlugin</name>
     <description>Background Service Plugin for syncing phone user account with php server</description>
     <license>MIT</license>

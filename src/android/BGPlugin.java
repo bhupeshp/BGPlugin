@@ -15,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +41,7 @@ public class BGPlugin extends CordovaPlugin {
     private String PHONE_CONTACT_ID = ContactsContract.CommonDataKinds.Phone.CONTACT_ID;
     private Uri CONTENT_DATA_URI = ContactsContract.Data.CONTENT_URI;
     private ContentResolver contentResolver;
+    private CallbackContext callback;
 
 
     @Override
@@ -99,6 +101,9 @@ public class BGPlugin extends CordovaPlugin {
             }
 
             if(ACTION_GET_NOTIFICATION.equals(action)){
+
+                this.callback = callbackContext;
+
                 // Use NotificationCompat.Builder to set up our notification.
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext());
 
@@ -107,28 +112,23 @@ public class BGPlugin extends CordovaPlugin {
 
                 class CallbackAction {
                     public CallbackAction() {
-                        callbackContext.success("app");
+                        PluginResult result = new PluginResult(PluginResult.Status.OK, "app");
+                        result.setKeepCallback(true);
+                        callback.sendPluginResult(result);
                     }
                 }
-                class CallbackScan {
-                    public CallbackScan() {
-                        callbackContext.success("scan");
+                class CallbackActionScan {
+                    public CallbackActionScan() {
+                        PluginResult result = new PluginResult(PluginResult.Status.OK, "app");
+                        result.setKeepCallback(true);
+                        callback.sendPluginResult(result);
                     }
                 }
-                class CallbackVCard {
-                    public CallbackVCard() {
-                        callbackContext.success("vcard");
-                    }
-                }
-
 
                 // This intent is fired when notification is clicked
-                //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javatechig.com/"));
                 Intent intent = new Intent(cordova.getActivity().getApplicationContext(), CallbackAction.class);
-                //Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com/"));
-                Intent intentScan = new Intent(cordova.getActivity().getApplicationContext(), CallbackScan.class);
-                //Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("http://facebook.com/"));
-                Intent intentVCard = new Intent(cordova.getActivity().getApplicationContext(), CallbackVCard.class);
+                Intent intentScan = new Intent(cordova.getActivity().getApplicationContext(), CallbackActionScan.class);
+                Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("http://facebook.com/"));
                 Intent intentExit = new Intent(Intent.ACTION_VIEW, Uri.parse("http://youtube.com/"));
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

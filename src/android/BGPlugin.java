@@ -106,18 +106,16 @@ public class BGPlugin extends CordovaPlugin {
                 builder.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon);
 
                 // This intent is fired when notification is clicked
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://"));
-                Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://"));
-                Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("http://facebook.com/"));
-                Intent intentExit = new Intent(Intent.ACTION_VIEW, Uri.parse("http://youtube.com/"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("qt://"));
+                Intent intentScan = new Intent(Intent.ACTION_VIEW, Uri.parse("qt://scan"));
+                Intent intentVCard = new Intent(Intent.ACTION_VIEW, Uri.parse("qt://vcard"));
+                Intent intentExit = new Intent(cordova.getActivity().getApplicationContext(), ButtonReceiver.class);
+                intentExit.putExtra("notificationId","0");
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
                 PendingIntent pendingIntentScan = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intentScan, PendingIntent.FLAG_UPDATE_CURRENT);
-
                 PendingIntent pendingIntentVCard = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intentVCard, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                PendingIntent pendingIntentExit = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, intentExit, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntentExit = PendingIntent.getBroadcast(cordova.getActivity().getApplicationContext(), 0, intentExit,0);
 
                 // Set the intent that will fire when the user taps the notification.
                 builder.setContentIntent(pendingIntent);

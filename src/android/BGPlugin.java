@@ -112,6 +112,7 @@ public class BGPlugin extends CordovaPlugin {
 
                 class CallbackAction {
                     public CallbackAction() {
+                        Log.d("QTBGPlugin", "inside CallbackAction");
                         PluginResult result = new PluginResult(PluginResult.Status.OK, "app");
                         result.setKeepCallback(true);
                         callback.sendPluginResult(result);
@@ -119,7 +120,8 @@ public class BGPlugin extends CordovaPlugin {
                 }
                 class CallbackActionScan {
                     public CallbackActionScan() {
-                        PluginResult result = new PluginResult(PluginResult.Status.OK, "app");
+                        Log.d("QTBGPlugin", "inside CallbackActionScan");
+                        PluginResult result = new PluginResult(PluginResult.Status.OK, "scan");
                         result.setKeepCallback(true);
                         callback.sendPluginResult(result);
                     }
